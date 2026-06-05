@@ -12,12 +12,19 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
-add_executable(Snake
+set(SOURCES
     src/main.cpp
+    src/Game.cpp
+
+    src/Render/Renderer.cpp
 )
+
+add_executable(Snake ${SOURCES})
 
 target_link_libraries(Snake PRIVATE
     SFML::Graphics
 )
+
+target_include_directories(Snake PRIVATE include)
 
 target_compile_features(Snake PRIVATE cxx_std_20)
