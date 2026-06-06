@@ -23,9 +23,10 @@ public:
     void render();
 
 private:
+    void initObjects();
     void spawnFood();
-    bool canEat() const;
-    void eat();
+    void onEat();
+    void onLose();
 
     sf::RenderWindow window;
     sf::Clock clock;

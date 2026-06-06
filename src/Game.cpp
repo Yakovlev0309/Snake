@@ -16,27 +16,25 @@ Game::Game()
 
     foodRenderer.setColor(sf::Color::Red);
     snakeRenderer.setColor(sf::Color::Green);
-
-    sf::Vector2i startPos{
-        Config::Game::GRID_WIDTH / 2,
-        Config::Game::GRID_HEIGHT / 2,
-    };
-    snake = new Snake(startPos);
+    snakeRenderer.setHeadColor({0, 200, 0}); // Something like dark green
 
     food = new Cell();
     food->size = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
+
+    snake = new Snake();
 }
 
 Game::~Game()
 {
     delete snake;
+    delete food;
 }
 
 void Game::run()
 {
     Log::info("Running");
 
-    spawnFood();
+    initObjects();
 
     float dt;
     while (window.isOpen())
@@ -50,6 +48,17 @@ void Game::run()
     }
 
     Log::info("Game quit");
+}
+
+void Game::initObjects()
+{
+    sf::Vector2i startPos{
+        Config::Game::GRID_WIDTH / 2,
+        Config::Game::GRID_HEIGHT / 2,
+    };
+    snake->create(startPos);
+
+    spawnFood();
 }
 
 void Game::spawnFood()
@@ -76,32 +85,34 @@ void Game::processEvents()
 void Game::update(float dt)
 {
     accumulator += dt;
-
     while (accumulator >= Config::Gameplay::SNAKE_STEP_INTERVAL)
     {
         snake->move();
         accumulator -= Config::Gameplay::SNAKE_STEP_INTERVAL;
     }
 
-    if (canEat())
-        eat();
-}
-
-bool Game::canEat() const
-{
-    const auto& snakeCells = snake->getCells();
-    for (auto& snakeCell : snakeCells)
+    if (snake->checkLose())
     {
-        if (snakeCell.pos == food->pos)
-            return true;
+        onLose();
+        return;
     }
-    return false;
+
+    if (snake->canEat(*food))
+        onEat();
 }
 
-void Game::eat()
+void Game::onEat()
 {
-    snake->addSegment();
+    snake->eat();
+
     spawnFood();
+}
+
+void Game::onLose()
+{
+    snake->onLose();
+
+    initObjects();
 }
 
 void Game::render()

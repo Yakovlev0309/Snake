@@ -13,7 +13,7 @@ namespace Window
 namespace Gameplay
 {
     constexpr int START_DIRECTION = 0;
-    constexpr float SNAKE_STEPS_PER_SECOND = 4.f;
+    constexpr float SNAKE_STEPS_PER_SECOND = 8.f;
     constexpr float SNAKE_STEP_INTERVAL = 1.f / SNAKE_STEPS_PER_SECOND;
 }
 

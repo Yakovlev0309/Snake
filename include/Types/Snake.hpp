@@ -7,11 +7,15 @@
 class Snake : public SnakeBase
 {
 public:
-    Snake(const sf::Vector2i& startPos);
+    Snake();
     
-    void addSegment() override;
+    void create(const sf::Vector2i& startPos) override;
     void changeDirection(const Direction& direction) override;
     void move() override;
+    bool canEat(const Cell& food) const override;
+    void eat() override;
+    bool checkLose() const override;
+    void onLose() override;
 
 private:
     Snake::Direction getOppositeDirection(const Direction& direction);
