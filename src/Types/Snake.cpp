@@ -1,19 +1,17 @@
 #include "Types/Snake.hpp"
 #include "Config.hpp"
 
-Snake::Snake(const sf::Vector2i& startPos) : segmentSize(segmentSize), lastTailPos(startPos)
+Snake::Snake()
 {
     currentDirection = static_cast<Direction>(Config::Gameplay::START_DIRECTION);
 
     segmentSize = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
-
-    Cell head{ segmentSize, startPos };
-    cells.push_back(head);
 }
 
-void Snake::addSegment()
+void Snake::create(const sf::Vector2i& startPos)
 {
-    cells.emplace_back(segmentSize, lastTailPos);
+    Cell head{ segmentSize, startPos };
+    cells.push_back(head);
 }
 
 void Snake::changeDirection(const Direction& direction)
@@ -73,4 +71,34 @@ void Snake::move()
             cells.front().pos.x = 0;
         break;
     }
+}
+
+bool Snake::canEat(const Cell& food) const
+{
+    for (auto& cell : cells)
+    {
+        if (cell.pos == food.pos)
+            return true;
+    }
+    return false;
+}
+
+void Snake::eat()
+{
+    cells.emplace_back(segmentSize, lastTailPos);
+}
+
+bool Snake::checkLose() const
+{
+    for (int i = 1; i < cells.size(); ++i)
+    {
+        if (cells.front().pos == cells[i].pos)
+            return true;
+    }
+    return false;
+}
+
+void Snake::onLose()
+{
+    cells.clear();
 }
