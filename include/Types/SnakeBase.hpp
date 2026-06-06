@@ -13,7 +13,7 @@ public:
         RIGHT
     };
 
-    virtual void changeDirection(const Direction& newDirection) = 0;
+    virtual void changeDirection(const Direction& direction) = 0;
     virtual void move() = 0;
     virtual void addSegment() = 0;
     const std::vector<Cell>& getCells() const { return cells; }

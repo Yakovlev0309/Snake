@@ -17,19 +17,20 @@ Game::Game()
     foodRenderer.setColor(sf::Color::Red);
     snakeRenderer.setColor(sf::Color::Green);
 
+    food = new Cell();
+    food->size = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
+
     sf::Vector2i startPos{
         Config::Game::GRID_WIDTH / 2,
         Config::Game::GRID_HEIGHT / 2,
     };
     snake = new Snake(startPos);
-
-    food = new Cell();
-    food->size = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
 }
 
 Game::~Game()
 {
     delete snake;
+    delete food;
 }
 
 void Game::run()
