@@ -1,12 +1,11 @@
 #include "Types/Snake.hpp"
 #include "Config.hpp"
 
-Snake::Snake(const sf::Vector2f& startPos) : segmentSize(segmentSize)
+Snake::Snake(const sf::Vector2i& startPos) : segmentSize(segmentSize)
 {
     currentDirection = static_cast<Direction>(Config::Gameplay::START_DIRECTION);
 
     segmentSize = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
-    step = segmentSize.x;
 
     Cell head{ segmentSize, startPos };
     cells.push_back(head);
@@ -49,20 +48,20 @@ void Snake::move()
     for (int i = size - 1; i > 0; ++i)
         cells[i].pos = cells[i + 1].pos;
 
-    sf::Vector2f pos = cells.front().pos;
+    sf::Vector2i pos = cells.front().pos;
     switch (currentDirection)
     {
     case Direction::UP:
-        pos.y -= step;
+        --pos.y;
         break;
     case Direction::DOWN:
-        pos.y += step;
+        ++pos.y;
         break;
     case Direction::LEFT:
-        pos.x -= step;
+        --pos.x;
         break;
     case Direction::RIGHT:
-        pos.x += step;
+        ++pos.x;
         break;
     }
     cells.front().pos = pos;

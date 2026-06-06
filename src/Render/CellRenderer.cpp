@@ -1,10 +1,14 @@
 #include "Render/CellRenderer.hpp"
 #include "Types/Cell.hpp"
+#include "Config.hpp"
 
 void CellRenderer::drawCell(const Cell& cell)
 {
-    cellRect.setSize({ cell.size.x, cell.size.y });
-    cellRect.setPosition({ cell.pos.x, cell.pos.y });
+    cellRect.setSize({ (float)cell.size.x, (float)cell.size.y });
+    cellRect.setPosition({
+        (float)(cell.pos.x * Config::Objects::SEGMENT_WIDTH),
+        (float)(cell.pos.y * Config::Objects::SEGMENT_WIDTH)
+    });
 
     window.draw(cellRect);
 }

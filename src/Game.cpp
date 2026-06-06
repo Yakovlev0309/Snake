@@ -17,14 +17,14 @@ Game::Game()
     foodRenderer.setColor(sf::Color::Red);
     snakeRenderer.setColor(sf::Color::Green);
 
-    sf::Vector2f startPos{
-        window.getSize().x / 2.f,
-        window.getSize().y / 2.f,
+    sf::Vector2i startPos{
+        Config::Game::GRID_WIDTH / 2,
+        Config::Game::GRID_HEIGHT / 2,
     };
     snake = new Snake(startPos);
 
     food = new Cell();
-    food->size = {Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH};
+    food->size = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
 }
 
 Game::~Game()
@@ -54,10 +54,13 @@ void Game::run()
 
 void Game::spawnFood()
 {
-    std::uniform_int_distribution<int> xDist(0, Config::Window::WIDTH - 1 - Config::Objects::SEGMENT_WIDTH);
-    std::uniform_int_distribution<int> yDist(0, Config::Window::HEIGHT - 1 - Config::Objects::SEGMENT_WIDTH);
-    
-    food->pos = {(float)xDist(rng), (float)yDist(rng)};
+    std::uniform_int_distribution<int> xDist(0, Config::Game::GRID_WIDTH - 1);
+    std::uniform_int_distribution<int> yDist(0, Config::Game::GRID_HEIGHT - 1);
+
+    food->pos = { 
+        (int)xDist(rng), 
+        (int)yDist(rng) 
+    };
 }
 
 void Game::processEvents()
@@ -72,6 +75,9 @@ void Game::processEvents()
 
 void Game::update(float dt)
 {
+    if (canEat())
+        eat();
+
     accumulator += dt;
 
     while (accumulator >= Config::Gameplay::SNAKE_STEP_INTERVAL)
@@ -79,6 +85,23 @@ void Game::update(float dt)
         snake->move();
         accumulator -= Config::Gameplay::SNAKE_STEP_INTERVAL;
     }
+}
+
+bool Game::canEat() const
+{
+    const auto& snakeCells = snake->getCells();
+    for (auto& snakeCell : snakeCells)
+    {
+        if (snakeCell.pos == food->pos)
+            return true;
+    }
+    return false;
+}
+
+void Game::eat()
+{
+    snake->addSegment();
+    spawnFood();
 }
 
 void Game::render()

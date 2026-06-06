@@ -7,17 +7,16 @@
 class Snake : public SnakeBase
 {
 public:
-    Snake(const sf::Vector2f& startPos);
-    void addSegment();
-
+    Snake(const sf::Vector2i& startPos);
+    
+    void addSegment() override;
     void changeDirection(const Direction& direction) override;
     void move() override;
 
 private:
     Snake::Direction getOppositeDirection(const Direction& direction);
 
-    sf::Vector2f segmentSize;
-    sf::Vector2f lastTailPos;
+    sf::Vector2i segmentSize;
+    sf::Vector2i lastTailPos;
     Direction currentDirection;
-    float step{ 0.f };
 };

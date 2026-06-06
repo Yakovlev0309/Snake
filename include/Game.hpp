@@ -24,6 +24,8 @@ public:
 
 private:
     void spawnFood();
+    bool canEat() const;
+    void eat();
 
     sf::RenderWindow window;
     sf::Clock clock;

@@ -21,4 +21,10 @@ namespace Objects
 {
     constexpr int SEGMENT_WIDTH = 40;
 }
+
+namespace Game
+{
+    constexpr int GRID_WIDTH = 20;
+    constexpr int GRID_HEIGHT = 15;
+}
 }
