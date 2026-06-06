@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(Snake LANGUAGES CXX)
 
 include(FetchContent)
@@ -12,12 +14,24 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
-add_executable(Snake
+set(SOURCES
     src/main.cpp
+    src/Game.cpp
+
+    src/Render/CellRenderer.cpp
+    src/Render/SnakeRenderer.cpp
+
+    src/Types/Snake.cpp
+
+    src/Events/EventHandler.cpp
 )
+
+add_executable(Snake ${SOURCES})
 
 target_link_libraries(Snake PRIVATE
     SFML::Graphics
 )
+
+target_include_directories(Snake PRIVATE include)
 
 target_compile_features(Snake PRIVATE cxx_std_20)
