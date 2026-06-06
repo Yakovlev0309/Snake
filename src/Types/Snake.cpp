@@ -49,20 +49,28 @@ void Snake::move()
     int size = cells.size();
     for (int i = size - 1; i > 0; --i)
         cells[i].pos = cells[i - 1].pos;
-    
+
     switch (currentDirection)
     {
     case Direction::UP:
         --cells.front().pos.y;
+        if (cells.front().pos.y < 0)
+            cells.front().pos.y = Config::Game::GRID_HEIGHT - 1;
         break;
     case Direction::DOWN:
         ++cells.front().pos.y;
+        if (cells.front().pos.y >= Config::Game::GRID_HEIGHT)
+            cells.front().pos.y = 0;
         break;
     case Direction::LEFT:
         --cells.front().pos.x;
+        if (cells.front().pos.x < 0)
+            cells.front().pos.x = Config::Game::GRID_WIDTH;
         break;
     case Direction::RIGHT:
         ++cells.front().pos.x;
+        if (cells.front().pos.x >= Config::Game::GRID_WIDTH)
+            cells.front().pos.x = 0;
         break;
     }
 }
