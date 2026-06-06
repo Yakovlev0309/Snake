@@ -57,9 +57,9 @@ void Game::spawnFood()
     std::uniform_int_distribution<int> xDist(0, Config::Game::GRID_WIDTH - 1);
     std::uniform_int_distribution<int> yDist(0, Config::Game::GRID_HEIGHT - 1);
 
-    food->pos = { 
-        (int)xDist(rng), 
-        (int)yDist(rng) 
+    food->pos = {
+        (int)xDist(rng),
+        (int)yDist(rng)
     };
 }
 
@@ -75,9 +75,6 @@ void Game::processEvents()
 
 void Game::update(float dt)
 {
-    if (canEat())
-        eat();
-
     accumulator += dt;
 
     while (accumulator >= Config::Gameplay::SNAKE_STEP_INTERVAL)
@@ -85,6 +82,9 @@ void Game::update(float dt)
         snake->move();
         accumulator -= Config::Gameplay::SNAKE_STEP_INTERVAL;
     }
+
+    if (canEat())
+        eat();
 }
 
 bool Game::canEat() const

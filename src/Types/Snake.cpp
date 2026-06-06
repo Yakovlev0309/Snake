@@ -1,7 +1,7 @@
 #include "Types/Snake.hpp"
 #include "Config.hpp"
 
-Snake::Snake(const sf::Vector2i& startPos) : segmentSize(segmentSize)
+Snake::Snake(const sf::Vector2i& startPos) : segmentSize(segmentSize), lastTailPos(startPos)
 {
     currentDirection = static_cast<Direction>(Config::Gameplay::START_DIRECTION);
 
@@ -44,25 +44,25 @@ Snake::Direction Snake::getOppositeDirection(const Direction& direction)
 
 void Snake::move()
 {
-    int size = cells.size();
-    for (int i = size - 1; i > 0; ++i)
-        cells[i].pos = cells[i + 1].pos;
+    lastTailPos = cells.back().pos;
 
-    sf::Vector2i pos = cells.front().pos;
+    int size = cells.size();
+    for (int i = size - 1; i > 0; --i)
+        cells[i].pos = cells[i - 1].pos;
+    
     switch (currentDirection)
     {
     case Direction::UP:
-        --pos.y;
+        --cells.front().pos.y;
         break;
     case Direction::DOWN:
-        ++pos.y;
+        ++cells.front().pos.y;
         break;
     case Direction::LEFT:
-        --pos.x;
+        --cells.front().pos.x;
         break;
     case Direction::RIGHT:
-        ++pos.x;
+        ++cells.front().pos.x;
         break;
     }
-    cells.front().pos = pos;
 }
