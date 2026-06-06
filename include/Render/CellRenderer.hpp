@@ -5,15 +5,15 @@
 
 class Cell;
 
-class Renderer
+class CellRenderer
 {
 public:
-    Renderer(sf::RenderWindow& window) : window(window) {}
+    CellRenderer(sf::RenderWindow& window) : window(window) {}
 
-    void drawCell(const Cell& cellData);
+    void drawCell(const Cell& cell);
     void setColor(const sf::Color& color);
 
-private:
+protected:
     sf::RenderWindow& window;
-    sf::RectangleShape cell;
+    sf::RectangleShape cellRect;
 };

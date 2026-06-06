@@ -2,17 +2,31 @@
 #include "Log/LogSystem.hpp"
 #include "Config.hpp"
 #include "Types/Cell.hpp"
+#include "Types/Snake.hpp"
+#include "Events/EventHandler.hpp"
 
-Game::Game() 
+Game::Game()
     : window(
-        sf::VideoMode({ GameConfig::WINDOW_WIDTH, GameConfig::WINDOW_HEIGHT }),
-        GameConfig::GAME_NAME
+        sf::VideoMode({ Config::Window::WIDTH, Config::Window::HEIGHT }),
+        Config::Window::GAME_NAME
     ),
-    renderer(window)
+    foodRenderer(window), snakeRenderer(window)
 {
-    window.setFramerateLimit(GameConfig::FRAMERATE_LIMIT);
+    window.setFramerateLimit(Config::Window::FRAMERATE_LIMIT);
 
-    renderer.setColor(sf::Color::Red); // test
+    foodRenderer.setColor(sf::Color::Red);
+    snakeRenderer.setColor(sf::Color::Green);
+
+    sf::Vector2f startPos{
+        window.getSize().x / 2.f,
+        window.getSize().y / 2.f,
+    };
+    snake = new Snake(startPos);
+}
+
+Game::~Game()
+{
+    delete snake;
 }
 
 void Game::run()
@@ -20,7 +34,6 @@ void Game::run()
     Log::info("Running");
 
     float dt;
-
     while (window.isOpen())
     {
         processEvents();
@@ -38,21 +51,28 @@ void Game::processEvents()
 {
     while (const auto event = window.pollEvent())
     {
-        if (event->is<sf::Event::Closed>())
-            window.close();
+        EventHandler::processWindowClose(event, window);
+
+        EventHandler::processKeyPress(event, snake);
     }
 }
 
 void Game::update(float dt)
 {
-    // game logic
+    accumulator += dt;
+
+    while (accumulator >= Config::Gameplay::SNAKE_STEP_INTERVAL)
+    {
+        snake->move();
+        accumulator -= Config::Gameplay::SNAKE_STEP_INTERVAL;
+    }
 }
 
 void Game::render()
 {
     window.clear();
 
-    renderer.drawCell(Cell{ {60.f, 60.f}, {100.f, 100.f} });
+    snakeRenderer.drawSnake(*snake);
 
     window.display();
 }

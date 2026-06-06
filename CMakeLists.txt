@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 project(Snake LANGUAGES CXX)
 
 include(FetchContent)
@@ -16,7 +18,12 @@ set(SOURCES
     src/main.cpp
     src/Game.cpp
 
-    src/Render/Renderer.cpp
+    src/Render/CellRenderer.cpp
+    src/Render/SnakeRenderer.cpp
+
+    src/Types/Snake.cpp
+
+    src/Events/EventHandler.cpp
 )
 
 add_executable(Snake ${SOURCES})
