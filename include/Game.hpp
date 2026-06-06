@@ -6,7 +6,10 @@
 #include "Render/CellRenderer.hpp"
 #include "Render/SnakeRenderer.hpp"
 
+#include <random>
+
 class SnakeBase;
+class Cell;
 
 class Game
 {
@@ -20,12 +23,16 @@ public:
     void render();
 
 private:
+    void spawnFood();
+
     sf::RenderWindow window;
     sf::Clock clock;
     CellRenderer foodRenderer;
     SnakeRenderer snakeRenderer;
 
     SnakeBase* snake{ nullptr };
+    Cell* food{ nullptr };
 
     float accumulator{ 0.f };
+    std::mt19937 rng{std::random_device{}()};
 };

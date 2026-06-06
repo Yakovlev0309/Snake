@@ -5,7 +5,7 @@ Snake::Snake(const sf::Vector2f& startPos) : segmentSize(segmentSize)
 {
     currentDirection = static_cast<Direction>(Config::Gameplay::START_DIRECTION);
 
-    segmentSize = { Config::Snake::SEGMENT_WIDTH, Config::Snake::SEGMENT_WIDTH };
+    segmentSize = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };
     step = segmentSize.x;
 
     Cell head{ segmentSize, startPos };

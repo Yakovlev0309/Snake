@@ -22,6 +22,9 @@ Game::Game()
         window.getSize().y / 2.f,
     };
     snake = new Snake(startPos);
+
+    food = new Cell();
+    food->size = {Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH};
 }
 
 Game::~Game()
@@ -32,6 +35,8 @@ Game::~Game()
 void Game::run()
 {
     Log::info("Running");
+
+    spawnFood();
 
     float dt;
     while (window.isOpen())
@@ -45,6 +50,14 @@ void Game::run()
     }
 
     Log::info("Game quit");
+}
+
+void Game::spawnFood()
+{
+    std::uniform_int_distribution<int> xDist(0, Config::Window::WIDTH - 1 - Config::Objects::SEGMENT_WIDTH);
+    std::uniform_int_distribution<int> yDist(0, Config::Window::HEIGHT - 1 - Config::Objects::SEGMENT_WIDTH);
+    
+    food->pos = {(float)xDist(rng), (float)yDist(rng)};
 }
 
 void Game::processEvents()
@@ -73,6 +86,7 @@ void Game::render()
     window.clear();
 
     snakeRenderer.drawSnake(*snake);
+    foodRenderer.drawCell(*food);
 
     window.display();
 }

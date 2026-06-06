@@ -17,7 +17,7 @@ namespace Gameplay
     constexpr float SNAKE_STEP_INTERVAL = 1.f / SNAKE_STEPS_PER_SECOND;
 }
 
-namespace Snake
+namespace Objects
 {
     constexpr int SEGMENT_WIDTH = 40;
 }
