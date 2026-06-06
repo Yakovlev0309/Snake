@@ -16,6 +16,7 @@ Game::Game()
 
     foodRenderer.setColor(sf::Color::Red);
     snakeRenderer.setColor(sf::Color::Green);
+    snakeRenderer.setHeadColor({0, 200, 0}); // Something like dark green
 
     food = new Cell();
     food->size = { Config::Objects::SEGMENT_WIDTH, Config::Objects::SEGMENT_WIDTH };

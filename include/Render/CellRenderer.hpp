@@ -10,7 +10,7 @@ class CellRenderer
 public:
     CellRenderer(sf::RenderWindow& window) : window(window) {}
 
-    void drawCell(const Cell& cell);
+    virtual void drawCell(const Cell& cell);
     void setColor(const sf::Color& color);
 
 protected:
